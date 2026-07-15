@@ -1,0 +1,31 @@
+name: Apex QA Artifact Generation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate-reports:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Initialize Node.js Engine
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: npm install xlsx
+
+      - name: Execute Automation Script
+        run: node scripts/generate-reports.js
+
+      - name: Upload Excel Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Enterprise-QA-Reports
+          path: test-artifacts/*.xlsx
